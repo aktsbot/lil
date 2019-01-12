@@ -2,7 +2,10 @@
   "development": {
     "dialect": "sqlite",
     "storage": "./lil.db.dev",
-    "logging": true
+    "logging": true,
+    "define": {
+      "timestamps": true
+    }
   },
   "test": {
     "dialect": "sqlite",
