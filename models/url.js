@@ -5,15 +5,13 @@ module.exports = (sequelize, DataTypes) => {
     {
       destination: DataTypes.STRING,
       short: DataTypes.STRING,
-      createdDateTime: DataTypes.DATE,
-      updatedDateTime: DataTypes.DATE,
-      status: DataTypes.STRING,
-      userId: DataTypes.INTEGER
+      status: DataTypes.STRING
     },
     {}
   );
   Url.associate = function(models) {
     // associations can be defined here
+    Url.belongsTo(models.User);
   };
   return Url;
 };
