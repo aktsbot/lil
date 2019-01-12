@@ -8,13 +8,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      email: {
+      username: {
         type: Sequelize.STRING
       },
       status: {
         type: Sequelize.STRING
       },
-      gateCode: {
+      captcha: {
         type: Sequelize.STRING
       },
       createdAt: {

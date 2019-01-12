@@ -17,16 +17,16 @@ module.exports = {
       "Users",
       [
         {
-          email: "thor@marvel.co",
+          username: "thor@marvel.co",
           status: "ACTIVE",
-          gateCode: "XYZ123",
+          captcha: "XYZ123",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          email: "tony@marvel.co",
+          username: "tony@marvel.co",
           status: "INACTIVE",
-          gateCode: "ABC123",
+          captcha: "ABC123",
           createdAt: new Date(),
           updatedAt: new Date()
         }

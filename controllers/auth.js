@@ -1,31 +1,40 @@
 const utils = require("../utils");
 const randomstring = require("randomstring");
+const svgCaptcha = require("svg-captcha");
 const db = require("../models");
 
 let authGate = async (req, res) => {
   try {
-    // check if the "email" parameter in payload is in db
+    // check if the "username" parameter in payload is in db
     const existingUserData = await db.User.find({
       where: {
-        email: req.body.email
+        username: req.body.username
       }
     });
 
-    const gateCode = randomstring.generate(5);
+    const captcha = svgCaptcha.create();
+    const captchaText = captcha.text;
     if (!existingUserData) {
-      // if the user doesnt exist, add email id to Users
+      // if the user doesnt exist, add username id to Users
       const newUser = {
-        email: req.body.email,
+        username: req.body.username,
         status: "ACTIVE",
-        gateCode
+        captcha: captchaText
       };
 
-      const userSaveStatus = await db.User.create(newUser);
-      console.log(userSaveStatus);
+      await db.User.create(newUser);
+    } else {
+      existingUserData.captcha = captchaText;
+      await existingUserData.save();
     }
-    // if the user exists, generate a gateCode and send it via email
 
-    return res.json({});
+    const resp = utils.respJSON({
+      err: false,
+      msg: "Captcha generated",
+      data: captcha.data
+    });
+
+    return res.status(200).json(resp);
   } catch (e) {
     console.log(`[server] authGate error: ${e}`);
     const resp = utils.respJSON({

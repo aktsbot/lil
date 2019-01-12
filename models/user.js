@@ -3,9 +3,9 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "User",
     {
-      email: DataTypes.STRING,
+      username: DataTypes.STRING,
       status: DataTypes.STRING,
-      gateCode: DataTypes.STRING
+      captcha: DataTypes.STRING
     },
     {}
   );
