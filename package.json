@@ -1,0 +1,26 @@
+{
+  "name": "lil",
+  "version": "0.0.1",
+  "description": "A url shortening service with React, Node and SQLite3",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "randomstring": "^1.1.5",
+    "sequelize": "^4.42.0",
+    "sqlite3": "^4.0.6"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9",
+    "sequelize-cli": "^5.4.0"
+  }
+}
