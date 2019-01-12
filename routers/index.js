@@ -8,6 +8,7 @@ const apiPre = `/api/${config.api_version}`;
 // get all routes
 const auth = require("./auth");
 
+router.use("/", express.static("pub"));
 router.use(`${apiPre}/auth`, auth);
 
 // export that router

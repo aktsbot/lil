@@ -15,12 +15,12 @@ let authGate = (req, res, next) => {
     switch (error.details[0].context.key) {
       case "username":
         return res.status(400).json({
-          error: true,
+          err: true,
           msg: "Username should be alphanumeric and be less than 8 chars"
         });
       default:
         return res.status(400).json({
-          error: true,
+          err: true,
           msg: "Invalid payload"
         });
     }
@@ -53,17 +53,17 @@ let verify = (req, res, next) => {
     switch (error.details[0].context.key) {
       case "username":
         return res.status(400).json({
-          error: true,
+          err: true,
           msg: "Username should be alphanumeric and be less than 8 chars"
         });
       case "captcha":
         return res.status(400).json({
-          error: true,
+          err: true,
           msg: "Captcha should be less than 5 chars"
         });
       default:
         return res.status(400).json({
-          error: true,
+          err: true,
           msg: "Invalid payload"
         });
     }
