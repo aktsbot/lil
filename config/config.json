@@ -8,7 +8,8 @@
     },
     "hostname": "http://localhost",
     "port": 3030,
-    "api_version": "v0.1"
+    "api_version": "v0.1",
+    "jwt_secret": "00secret00"
   },
   "test": {
     "dialect": "sqlite",
@@ -30,6 +31,7 @@
     },
     "hostname": "https://www.one0.xyz",
     "port": 3032,
-    "api_version": "v0.1"
+    "api_version": "v0.1",
+    "jwt_secret": ""
   }
 }
