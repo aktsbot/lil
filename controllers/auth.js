@@ -9,7 +9,7 @@ let authGate = async (req, res) => {
     // check if the "username" parameter in payload is in db
     const existingUserData = await db.User.find({
       where: {
-        username: req.body.username
+        username: req.xop.username
       }
     });
 
@@ -18,7 +18,7 @@ let authGate = async (req, res) => {
     if (!existingUserData) {
       // if the user doesnt exist, add username id to Users
       const newUser = {
-        username: req.body.username,
+        username: req.xop.username,
         status: "ACTIVE",
         captcha: captchaText
       };
@@ -47,7 +47,7 @@ let verify = async (req, res) => {
   try {
     const userData = await db.User.find({
       where: {
-        username: req.body.username
+        username: req.xop.username
       }
     });
 
@@ -71,7 +71,7 @@ let verify = async (req, res) => {
       return res.status(401).json(resp);
     }
 
-    if (userData.captcha != req.body.captcha) {
+    if (userData.captcha != req.xop.captcha) {
       const resp = utils.respJSON({
         err: true,
         msg: `Captcha is invalid`,
