@@ -5,15 +5,31 @@
     "logging": true,
     "define": {
       "timestamps": true
-    }
+    },
+    "hostname": "http://localhost",
+    "port": 3030,
+    "api_version": "v0.1"
   },
   "test": {
     "dialect": "sqlite",
-    "storage": ":memory"
+    "storage": ":memory",
+    "logging": true,
+    "define": {
+      "timestamps": true
+    },
+    "hostname": "http://localhost",
+    "port": 3031,
+    "api_version": "v0.1"
   },
   "production": {
     "dialect": "sqlite",
     "storage": "./lil.db.prod",
-    "logging": false
+    "logging": false,
+    "define": {
+      "timestamps": true
+    },
+    "hostname": "https://www.one0.xyz",
+    "port": 3032,
+    "api_version": "v0.1"
   }
 }
