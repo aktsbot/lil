@@ -20,15 +20,15 @@ module.exports = {
           email: "thor@marvel.co",
           status: "ACTIVE",
           gateCode: "XYZ123",
-          createdAt: new Date().toDateString(),
-          updatedAt: new Date().toDateString()
+          createdAt: new Date(),
+          updatedAt: new Date()
         },
         {
           email: "tony@marvel.co",
           status: "INACTIVE",
           gateCode: "ABC123",
-          createdAt: new Date().toDateString(),
-          updatedAt: new Date().toDateString()
+          createdAt: new Date(),
+          updatedAt: new Date()
         }
       ],
       {}
