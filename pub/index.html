@@ -13,6 +13,7 @@
         font-size: 18px;
         color: #444;
         padding: 0 10px;
+        font-family: sans-serif;
       }
       h1,
       h2,
@@ -130,7 +131,8 @@
                 Toast("error", data.msg);
                 return;
               } else {
-                console.log(data);
+                localStorage.setItem("token", data.data);
+                window.location = "/app";
               }
             });
         }

@@ -1,1 +1,161 @@
-<h1>This is app</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Another URL shortening service</title>
+
+    <style type="text/css">
+      * {
+        font-family: sans-serif;
+        color: #444;
+        box-sizing: border-box;
+      }
+
+      .container {
+        width: 80%;
+        margin: 0 auto;
+        margin-top: 2em;
+        min-width: 200px;
+      }
+
+      .container input {
+        padding: 10px;
+        width: 100%;
+        text-align: left;
+        border: 1px solid gray;
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+        font-family: monospace;
+      }
+
+      .url-list {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        margin-top: 2em;
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      .url-list .url {
+        background: #edeeeb;
+        padding: 15px;
+        width: 300px;
+        margin: 5px;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      .ops {
+        text-align: right;
+        color: #b23535;
+        cursor: pointer;
+      }
+      @media (max-width: 400px) {
+        .url-list {
+          display: block;
+          padding: 0px;
+        }
+      }
+    </style>
+
+    <script src="vue.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <p class="ops" id="logout-btn">Logout</p>
+      <div id="app">
+        <input type="text" class="url-ip" v-on:keyup.13="addUrl"/>
+        <div class="url-list">
+          <link-item v-for="link of linkList" v-bind:link="link" v-bind:key="link.id"/>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var token = localStorage.getItem("token");
+      if (!token) {
+        window.location = "/";
+      }
+      document
+        .getElementById("logout-btn")
+        .addEventListener("click", function() {
+          localStorage.clear();
+          window.location = "/";
+        });
+    </script>
+
+    <script>
+      Vue.component("link-item", {
+        props: ["link"],
+        template: `<div class="url">
+          <p class="dest">
+            <a v-bind:href="link.destination">
+              {{ link.destination }}
+            </a>
+          </p>
+          <p class="short">
+            <a v-bind:href="link.short">{{ link.short }}</a>
+          </p>
+          <p class="ops">Delete</p>
+        </div>`
+      });
+
+      var app = new Vue({
+        el: "#app",
+        data: {
+            linkList: []
+        },
+        methods: {
+          init() {
+            var _self = this;
+            var token = localStorage.getItem("token");
+            fetch("/api/v0.1/url", {
+              method: "GET",
+              headers: {
+                "x-access-token": token
+              }
+            })
+              .then(function(response) {
+                return response.json();
+              })
+              .then(function(data) {
+                if (data.err === false) {
+                  _self.linkList = data.data;
+                } // implement toast here
+              });  
+          },
+          addUrl(e) {
+            var _self = this;
+            var url = e.target.value;
+            var token = localStorage.getItem("token");
+            fetch("/api/v0.1/url", {
+              method: "POST",
+              headers: {
+                "x-access-token": token,
+                Accept: "application/json",
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ destination: url })
+            })
+              .then(function(response) {
+                return response.json();
+              })
+              .then(function(data) {
+                if (data.err === false) {
+                  _self.linkList.push(data.data);
+                } // implement toast here
+              });  
+          }
+        },
+        mounted() {
+          this.init()
+        }
+      });
+    </script>
+  </body>
+</html>
