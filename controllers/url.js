@@ -130,7 +130,55 @@ const addUrl = async (req, res) => {
   }
 };
 
+const deleteUrl = async (req, res) => {
+  try {
+    // check if user is ACTIVE
+    if (!isUserActive(req.token.userId)) {
+      const resp = utils.respJSON({
+        err: true,
+        msg: "User is not active",
+        data: []
+      });
+
+      return res.status(401).json(resp);
+    }
+
+    let urlData = await db.Url.find({
+      where: {
+        id: req.xop.id,
+        UserId: req.token.userId
+      }
+    });
+
+    if (!urlData) {
+      const resp = utils.respJSON({
+        err: true,
+        msg: "Url does not belong to you.",
+        data: {}
+      });
+
+      return res.status(403).json(resp);
+    }
+
+    urlData.status = "DELETED";
+    await urlData.save();
+
+    const resp = utils.respJSON({
+      err: false,
+      msg: "Url deleted successfully",
+      data: {}
+    });
+
+    return res.status(200).json(resp);
+  } catch (e) {
+    console.log(`[server] add url error: ${e}`);
+    const resp = utils.respDefaultErrorJSON();
+    return res.status(500).json(resp);
+  }
+};
+
 module.exports = {
   getUserUrls,
-  addUrl
+  addUrl,
+  deleteUrl
 };

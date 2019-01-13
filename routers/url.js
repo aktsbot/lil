@@ -13,4 +13,11 @@ router.get(
 
 router.post(`/`, utils.verifyToken, validate.addUrl, controller.addUrl);
 
+router.delete(
+  `/:id`,
+  utils.verifyToken,
+  validate.deleteUrl,
+  controller.deleteUrl
+);
+
 module.exports = router;

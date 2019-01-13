@@ -76,7 +76,36 @@ let addUrl = (req, res, next) => {
   }
 };
 
+let deleteUrl = (req, res, next) => {
+  const schema = {
+    id: joi.number().required()
+  };
+
+  const { error, value } = joi.validate(req.params, schema);
+
+  if (error) {
+    switch (error.details[0].context.key) {
+      case "id":
+        return res.status(400).json({
+          err: true,
+          msg: "Url id must be a number"
+        });
+      default:
+        return res.status(400).json({
+          err: true,
+          msg: "Invalid payload"
+        });
+    }
+  } else {
+    req.xop = {
+      id: value.id
+    };
+    next();
+  }
+};
+
 module.exports = {
   getUserUrls,
-  addUrl
+  addUrl,
+  deleteUrl
 };
