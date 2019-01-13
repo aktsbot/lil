@@ -6,7 +6,7 @@
     "define": {
       "timestamps": true
     },
-    "hostname": "http://localhost",
+    "hostname": "http://localhost:3030",
     "port": 3030,
     "api_version": "v0.1",
     "jwt_secret": "00secret00"
