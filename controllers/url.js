@@ -53,7 +53,8 @@ const getUserUrls = async (req, res) => {
     const query = {
       attributes: ["id", "destination", "short", "status", "createdAt"],
       where: {
-        UserId: req.token.userId
+        UserId: req.token.userId,
+        status: "ACTIVE"
       },
       offset: skip,
       limit: perPage,
