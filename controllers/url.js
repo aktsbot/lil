@@ -40,13 +40,31 @@ const getUserUrls = async (req, res) => {
       return res.status(401).json(resp);
     }
 
-    let userUrls = await db.Url.findAll({
+    // pagination
+    let p = 1;
+    let skip = 0;
+    let perPage = 30;
+
+    if (req.xop.page && req.xop.page > 1) {
+      p = req.xop.page;
+      skip = perPage * p + 1;
+    }
+
+    const query = {
       attributes: ["id", "destination", "short", "status", "createdAt"],
       where: {
         UserId: req.token.userId
       },
+      offset: skip,
+      limit: perPage,
       raw: true // this returns a JSON, instead of an entity
-    });
+    };
+
+    if (req.xop.search && req.xop.search != "") {
+      query.where["destination"] = { $like: `%${req.xop.search}%` };
+    }
+
+    let userUrls = await db.Url.findAll(query);
 
     if (userUrls && userUrls.length > 0) {
       userUrls = userUrls.map(urlData => {
