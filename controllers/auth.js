@@ -1,5 +1,4 @@
 const utils = require("../utils");
-const randomstring = require("randomstring");
 const svgCaptcha = require("svg-captcha");
 const jwt = require("jsonwebtoken");
 const db = require("../models");

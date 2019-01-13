@@ -1,0 +1,50 @@
+const joi = require("joi");
+
+let getUserUrls = (req, res, next) => {
+  const schema = {
+    page: joi.number(),
+    search: joi
+      .string()
+      .alphanum()
+      .allow("")
+      .max(100)
+  };
+
+  let queryParameters = {
+    page: req.query.page ? req.query.page : 1,
+    search: req.query.search ? req.query.search : ""
+  };
+
+  const { error, value } = joi.validate(queryParameters, schema);
+
+  if (error) {
+    switch (error.details[0].context.key) {
+      case "page":
+        return res.status(400).json({
+          err: true,
+          msg: "Page number should be a number"
+        });
+      case "search":
+        return res.status(400).json({
+          err: true,
+          msg: "Search text should be alphanumeric"
+        });
+      default:
+        return res.status(400).json({
+          err: true,
+          msg: "Invalid payload"
+        });
+    }
+  } else {
+    req.xop = {
+      page: value.page,
+      search: value.search
+    };
+
+    next();
+  }
+};
+
+module.exports = {
+  getUserUrls
+};
