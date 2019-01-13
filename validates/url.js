@@ -45,6 +45,38 @@ let getUserUrls = (req, res, next) => {
   }
 };
 
+let addUrl = (req, res, next) => {
+  const schema = {
+    destination: joi
+      .string()
+      .max(512)
+      .required()
+  };
+
+  const { error, value } = joi.validate(req.body, schema);
+
+  if (error) {
+    switch (error.details[0].context.key) {
+      case "destination":
+        return res.status(400).json({
+          err: true,
+          msg: "Url not present"
+        });
+      default:
+        return res.status(400).json({
+          err: true,
+          msg: "Invalid payload"
+        });
+    }
+  } else {
+    req.xop = {
+      destination: value.destination
+    };
+    next();
+  }
+};
+
 module.exports = {
-  getUserUrls
+  getUserUrls,
+  addUrl
 };

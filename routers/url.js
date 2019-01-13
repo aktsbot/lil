@@ -11,4 +11,6 @@ router.get(
   controller.getUserUrls
 );
 
+router.post(`/`, utils.verifyToken, validate.addUrl, controller.addUrl);
+
 module.exports = router;

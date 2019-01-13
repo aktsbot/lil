@@ -94,6 +94,43 @@ const getUserUrls = async (req, res) => {
   }
 };
 
+const addUrl = async (req, res) => {
+  try {
+    // check if user is ACTIVE
+    if (!isUserActive(req.token.userId)) {
+      const resp = utils.respJSON({
+        err: true,
+        msg: "User is not active",
+        data: []
+      });
+
+      return res.status(401).json(resp);
+    }
+
+    const newUrl = {
+      destination: req.xop.destination,
+      status: "ACTIVE",
+      short: randomstring.generate(7),
+      UserId: req.token.userId
+    };
+
+    const urlSaveStatus = await db.Url.create(newUrl);
+
+    const resp = utils.respJSON({
+      err: false,
+      msg: "Url addedd successfully",
+      data: urlSaveStatus
+    });
+
+    return res.status(201).json(resp);
+  } catch (e) {
+    console.log(`[server] add url error: ${e}`);
+    const resp = utils.respDefaultErrorJSON();
+    return res.status(500).json(resp);
+  }
+};
+
 module.exports = {
-  getUserUrls
+  getUserUrls,
+  addUrl
 };
