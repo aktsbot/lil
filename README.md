@@ -37,7 +37,12 @@ $ node_modules/.bin/sequelize db:seed:all
 ## Run
 
 ```bash
-$ NODE_ENV="production" npm start
+$ git clone https://github.com/aktsbot/lil ./lil
+$ cd lil
+$ npm install
+$ npm start # for development
+$ # OR
+$ NODE_ENV="production" npm start # for production
 ```
 
 ## References
