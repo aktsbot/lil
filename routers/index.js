@@ -10,6 +10,7 @@ const auth = require("./auth");
 const url = require("./url");
 
 router.use("/", express.static("pub"));
+router.use("/app", express.static(__dirname + "/../pub/app.html"));
 router.use(`${apiPre}/auth`, auth);
 router.use(`${apiPre}/url`, url);
 
