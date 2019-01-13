@@ -40,9 +40,11 @@ $ node_modules/.bin/sequelize db:seed:all
 $ git clone https://github.com/aktsbot/lil ./lil
 $ cd lil
 $ npm install
+$ node_modules/.bin/sequelize db:migrate
 $ npm start # for development
 $ # OR
-$ NODE_ENV="production" npm start # for production
+$ NODE_ENV="production" node_modules/.bin/sequelize db:migrate
+$ JWT_SECRET="mw4h4h4" NODE_ENV="production" npm start # for production
 ```
 
 ## References
