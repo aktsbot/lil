@@ -9,8 +9,8 @@
     "dev": "nodemon server"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "akts <box.ashishk@gmail.com>",
+  "license": "WTFPL",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
