@@ -69,9 +69,9 @@
     <div class="container">
       <p class="ops" id="logout-btn">Logout</p>
       <div id="app">
-        <input type="text" class="url-ip" v-on:keyup.13="addUrl"/>
+        <input type="text" class="url-ip" id="url-ip" v-on:keyup.13="addUrl" placeholder="> https://my.long.url/goes/here [Enter]"/>
         <div class="url-list">
-          <link-item v-for="link of linkList" v-bind:link="link" v-bind:key="link.id"/>
+          <link-item v-for="link of linkList" v-bind:link="link" v-bind:key="link.id" v-on:delete-link="deleteLink"/>
         </div>
       </div>
     </div>
@@ -94,14 +94,14 @@
         props: ["link"],
         template: `<div class="url">
           <p class="dest">
-            <a v-bind:href="link.destination">
+            <a v-bind:href="link.destination" target="_blank">
               {{ link.destination }}
             </a>
           </p>
           <p class="short">
-            <a v-bind:href="link.short">{{ link.short }}</a>
+            <a v-bind:href="link.short" target="_blank">{{ link.short }}</a>
           </p>
-          <p class="ops">Delete</p>
+          <p class="ops" v-on:click="$emit('delete-link', link.id)">Delete</p>
         </div>`
       });
 
@@ -147,7 +147,28 @@
               })
               .then(function(data) {
                 if (data.err === false) {
+                  document.getElementById("url-ip").value = "";
                   _self.linkList.push(data.data);
+                } // implement toast here
+              });  
+          },
+          deleteLink(id) {
+            var _self = this;
+            var token = localStorage.getItem("token");
+            fetch("/api/v0.1/url/"+id, {
+              method: "DELETE",
+              headers: {
+                "x-access-token": token,
+                Accept: "application/json",
+                "Content-Type": "application/json"
+              }
+            })
+              .then(function(response) {
+                return response.json();
+              })
+              .then(function(data) {
+                if (data.err === false) {
+                  _self.linkList = _self.linkList.filter(l => l.id !== id);
                 } // implement toast here
               });  
           }

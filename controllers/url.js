@@ -115,7 +115,7 @@ const addUrl = async (req, res) => {
     };
 
     const urlSaveStatus = await db.Url.create(newUrl);
-
+    urlSaveStatus.short = `${config.hostname}/${urlSaveStatus.short}`;
     const resp = utils.respJSON({
       err: false,
       msg: "Url addedd successfully",
