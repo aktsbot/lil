@@ -34,6 +34,12 @@ $ node_modules/.bin/sequelize seed:generate --name seed-url
 $ node_modules/.bin/sequelize db:seed:all
 ```
 
+## Run
+
+```bash
+$ NODE_ENV="production" npm start
+```
+
 ## References
 
 - [stackabuse](https://stackabuse.com/using-sequelize-js-and-sqlite-in-an-express-js-app/)
