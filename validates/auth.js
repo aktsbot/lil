@@ -5,7 +5,7 @@ let authGate = (req, res, next) => {
     username: joi
       .string()
       .alphanum()
-      .max(8)
+      .max(256)
       .required()
   };
 
@@ -38,7 +38,7 @@ let verify = (req, res, next) => {
     username: joi
       .string()
       .alphanum()
-      .max(8)
+      .max(256)
       .required(),
     captcha: joi
       .string()
