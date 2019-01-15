@@ -50,6 +50,7 @@
       }
 
       .ops {
+        float: right;
         text-align: right;
         color: #b23535;
         cursor: pointer;
@@ -165,7 +166,7 @@
             <a  v-bind:href="link.short" target="_blank">{{ link.short }}</a>
             <button class="copy-button" v-on:click="copyToClipboard(link.short)"> Copy</button>
           </p>
-          <p class="ops" v-on:click="$emit('delete-link', link.id)">Delete</p>
+          <span class="ops" v-on:click="$emit('delete-link', link.id)">Delete</span>
         </div>`,
         methods: {
           copyToClipboard(text) {
