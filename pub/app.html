@@ -58,13 +58,70 @@
       .dest {
         word-wrap: break-word;
       }
-
+      .copy-button {
+        background-color: #edeeeb;
+        border: none;
+        color: rgb(0, 0, 0);
+        border-radius: 3px;
+        padding: 6px 8px;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline;
+        outline: none;
+      }
+      .copy-button:hover {
+        background-color: #252525;
+        color: rgb(255, 255, 255);
+        
+      }
       @media (max-width: 400px) {
         .url-list {
           display: block;
           padding: 0px;
         }
       }
+
+      #snackbar {
+        visibility: hidden;
+        min-width: 154px;
+        margin-left: -87px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+        padding: 6px;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        bottom: 30px;
+      }
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;} 
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;} 
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
     </style>
 
     <script src="vue.js"></script>
@@ -80,6 +137,7 @@
         </div>
       </div>
     </div>
+    <div id="snackbar">Copied</div>
 
     <script>
       var token = localStorage.getItem("token");
@@ -104,10 +162,23 @@
             </a>
           </p>
           <p class="short">
-            <a v-bind:href="link.short" target="_blank">{{ link.short }}</a>
+            <a  v-bind:href="link.short" target="_blank">{{ link.short }}</a>
+            <button class="copy-button" v-on:click="copyToClipboard(link.short)"> Copy</button>
           </p>
           <p class="ops" v-on:click="$emit('delete-link', link.id)">Delete</p>
-        </div>`
+        </div>`,
+        methods: {
+          copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(
+              () => this.showSnack()
+            )
+          },
+          showSnack(){
+            let x = document.getElementById("snackbar");
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+          }
+        }
       });
 
       var app = new Vue({
@@ -176,7 +247,7 @@
                   _self.linkList = _self.linkList.filter(l => l.id !== id);
                 } // implement toast here
               });  
-          }
+          },
         },
         mounted() {
           this.init()
