@@ -76,6 +76,12 @@
         color: rgb(255, 255, 255);
         
       }
+
+      .err p {
+        text-align: center;
+        color: #b23535;
+      }
+
       @media (max-width: 400px) {
         .url-list {
           display: block;
@@ -98,31 +104,31 @@
         bottom: 30px;
       }
 
-#snackbar.show {
-  visibility: visible;
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  animation: fadein 0.5s, fadeout 0.5s 2.5s;
-}
+      #snackbar.show {
+        visibility: visible;
+        -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      }
 
-@-webkit-keyframes fadein {
-  from {bottom: 0; opacity: 0;} 
-  to {bottom: 30px; opacity: 1;}
-}
+      @-webkit-keyframes fadein {
+        from {bottom: 0; opacity: 0;} 
+        to {bottom: 30px; opacity: 1;}
+      }
 
-@keyframes fadein {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
-}
+      @keyframes fadein {
+        from {bottom: 0; opacity: 0;}
+        to {bottom: 30px; opacity: 1;}
+      }
 
-@-webkit-keyframes fadeout {
-  from {bottom: 30px; opacity: 1;} 
-  to {bottom: 0; opacity: 0;}
-}
+      @-webkit-keyframes fadeout {
+        from {bottom: 30px; opacity: 1;} 
+        to {bottom: 0; opacity: 0;}
+      }
 
-@keyframes fadeout {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
-}
+      @keyframes fadeout {
+        from {bottom: 30px; opacity: 1;}
+        to {bottom: 0; opacity: 0;}
+      }
     </style>
 
     <script src="vue.js"></script>
@@ -135,6 +141,9 @@
         <input type="text" class="url-ip" id="url-ip" v-on:keyup.13="addUrl" placeholder="> https://my.long.url/goes/here [Enter]"/>
         <div class="url-list">
           <link-item v-for="link of linkList" v-bind:link="link" v-bind:key="link.id" v-on:delete-link="deleteLink"/>
+        </div>
+        <div class="err" v-if="statusMsg != ''">
+          <p>{{ statusMsg }}</p>
         </div>
       </div>
     </div>
@@ -185,7 +194,8 @@
       var app = new Vue({
         el: "#app",
         data: {
-            linkList: []
+            linkList: [],
+            statusMsg: '',
         },
         methods: {
           init() {
@@ -203,7 +213,9 @@
               .then(function(data) {
                 if (data.err === false) {
                   _self.linkList = data.data;
-                } // implement toast here
+                } else {
+                  _self.statusMsg = data.msg;
+                }
               });  
           },
           addUrl(e) {

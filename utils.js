@@ -23,9 +23,10 @@ const verifyToken = async (req, res, next) => {
 
   jwt.verify(token, process.env.JWT_SECRET || "00secret00", (err, decoded) => {
     if (err)
-      return res
-        .status(500)
-        .json({ error: true, msg: "Failed to authenticate token." });
+      return res.status(500).json({
+        error: true,
+        msg: "Failed to authenticate token. Please login again!"
+      });
 
     // if everything good, save to request for use in other routes
     req.token = {
