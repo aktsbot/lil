@@ -138,6 +138,11 @@
       </script>
 
       <script>
+        // if token is present, navigate to /app
+        var token = localStorage.getItem("token");
+        if (token && token != "") {
+          window.location = "/app";
+        }
         var authURL = "/api/v0.1/auth";
         var userForm = document.getElementById("username-form");
         userForm.addEventListener("keydown", function(e) {
