@@ -11,7 +11,8 @@ var urlsToCache = [
   "favicon.ico",
   "mstile-150x150.png",
   "safari-pinned-tab.svg",
-  "vue.js"
+  "vue.js",
+  "site.webmanifest"
 ];
 
 self.addEventListener("install", function(event) {
