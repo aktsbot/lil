@@ -51,6 +51,7 @@ $ JWT_SECRET="mw4h4h4" NODE_ENV="production" npm start # for production
 
 - [stackabuse](https://stackabuse.com/using-sequelize-js-and-sqlite-in-an-express-js-app/)
 - [duringthedrive](https://www.duringthedrive.com/2017/05/06/models-migrations-sequelize-node/)
+- [pwa guide](https://medium.com/hicode/beginners-guide-to-converting-a-javascript-app-to-a-progressive-web-app-pwa-7682eded0f30)
 
 ## Contributors
 
