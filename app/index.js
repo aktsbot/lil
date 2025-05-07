@@ -1,9 +1,24 @@
+import "dotenv/config";
 import express from "express";
+import cookieParser from "cookie-parser";
 
 import config from "./config.js";
 import router from "./routes.js";
 
+import { appSession } from "./session.js";
+
 const app = express();
+
+app.use(appSession());
+app.use(cookieParser());
+
+// thanks to wesbos
+// pass variables to our templates + all requests
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  res.locals.currentPath = req.path;
+  next();
+});
 
 // --- start of helmet security
 // ref: https://helmetjs.github.io/faq/you-might-not-need-helmet/
@@ -50,7 +65,7 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
   let statusCode = err.statusCode || 500;
-  let message = err.message || "Unkown error happened";
+  let message = err.message || "Unknown error happened";
 
   return res.status(statusCode).send(message);
 });

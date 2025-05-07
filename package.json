@@ -12,7 +12,11 @@
   "license": "ISC",
   "dependencies": {
     "better-sqlite3": "^11.9.1",
+    "connect-sqlite3": "^0.9.15",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "express-session": "^1.18.1",
     "nanoid": "^5.1.5",
     "svg-captcha": "^1.4.0"
   }
