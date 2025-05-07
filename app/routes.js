@@ -178,4 +178,19 @@ router.post("/", userSessionRequired, (req, res, next) => {
   return res.redirect("/list");
 });
 
+// last route to get full url for a short
+router.get("/:short", (req, res, next) => {
+  const { short } = req.params;
+
+  const data = db.get(`SELECT destination FROM urls WHERE short=@short`, {
+    short,
+  });
+
+  if (data) {
+    return res.status(301).redirect(data.destination);
+  }
+
+  next();
+});
+
 export default router;
