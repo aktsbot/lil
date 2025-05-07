@@ -5,6 +5,8 @@ never saving any user-data. It uses random [captcha's](https://www.npmjs.com/pac
 
 An instance of it can be found over at [one0.xyz](https://www.one0.xyz/).
 
+The [old branch](tree/old) has the vue+sequelize codebase.
+
 ## Getting started
 
 ```
