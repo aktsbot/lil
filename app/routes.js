@@ -22,6 +22,7 @@ router.get("/new", userSessionRequired, (req, res) => {
   return res.send(
     pageHtml.newUrl({
       query: req.query,
+      user: res.locals.user,
     })
   );
 });
@@ -30,6 +31,7 @@ router.get("/me", userSessionRequired, (req, res) => {
   return res.send(
     pageHtml.me({
       query: req.query,
+      user: res.locals.user,
     })
   );
 });
@@ -38,6 +40,7 @@ router.get("/list", userSessionRequired, (req, res) => {
   return res.send(
     pageHtml.listUrls({
       query: req.query,
+      user: res.locals.user,
     })
   );
 });

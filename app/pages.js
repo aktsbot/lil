@@ -86,11 +86,11 @@ export const pageHtml = {
     html += `${templates.tail()}`;
     return html;
   },
-  newUrl: ({ query }) => {
+  newUrl: ({ query, user }) => {
     let html = `${templates.head({ title: "shorten new url" })}`;
 
     // TODO:
-    html += `${templates.nav({ username: "hardy" })}`;
+    html += `${templates.nav({ username: user.username })}`;
 
     html += `
     <div class="container">
@@ -124,10 +124,10 @@ export const pageHtml = {
     html += `${templates.tail()}`;
     return html;
   },
-  listUrls: ({ query }) => {
+  listUrls: ({ query, user }) => {
     let html = `${templates.head({ title: "your urls" })}`;
     // TODO:
-    html += `${templates.nav({ username: "hardy" })}`;
+    html += `${templates.nav({ username: user.username })}`;
 
     html += `
     <div class="container">
@@ -174,11 +174,11 @@ export const pageHtml = {
     html += `${templates.tail()}`;
     return html;
   },
-  me: ({ query }) => {
+  me: ({ query, user }) => {
     let html = `${templates.head({ title: "me" })}`;
 
     // TODO:
-    html += `${templates.nav({ username: "hardy" })}`;
+    html += `${templates.nav({ username: user.username })}`;
 
     html += `
     <div class="container">
@@ -186,8 +186,8 @@ export const pageHtml = {
 
       <h1>me</h1>
 
-      <p>username: hardy</p>
-      <p>api token: <code class="token">abc1234</code></p>
+      <p>username: ${user.username}</p>
+      <p>api token: <code class="token">${user.api_token}</code></p>
     </div>    
     `;
 
