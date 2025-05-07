@@ -1,11 +1,13 @@
 import "dotenv/config";
 import express from "express";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 import config from "./config.js";
 import router from "./routes.js";
 
 import { appSession } from "./session.js";
+const __dirname = import.meta.dirname;
 
 const app = express();
 
@@ -30,6 +32,8 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.urlencoded({ extended: true }));
+
+app.use(express.static(path.join(__dirname, "public")));
 
 // all application routes
 app.use("/", router);
