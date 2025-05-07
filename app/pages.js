@@ -53,13 +53,13 @@ const templates = {
 export const pageHtml = {
   home: ({ query }) => {
     let html = `${templates.head({
-      title: "Another URL shortening service",
+      title: "another URL shortening service",
     })}`;
 
     html += templates.message({ query });
     html += `
     <div class="container">
-      <h1>Hi there!</h1>
+      <h1>hi there!</h1>
       <p>
         This is an instance of <a href="https://github.com/aktsbot/lil">lil</a>,
         a simple URL shortening service. Please login.
@@ -71,6 +71,7 @@ export const pageHtml = {
           type="text"
           name="username"
           id="username"
+          autofocus
           placeholder="eg: nyanman"
           required
         />
