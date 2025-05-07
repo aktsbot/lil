@@ -216,6 +216,19 @@ export const pageHtml = {
 
       <p>username: ${user.username}</p>
       <p>api token: <code class="token">${user.api_token}</code></p>
+
+      <h2>how to use the api token</h2>
+
+<pre>
+curl -X POST \\
+-H "x-auth-token: ${user.api_token}" \\
+-H "Content-type: application/x-www-form-urlencoded" \\
+-d "full_url=https://www.warp.dev/terminus/curl-post-request" \\
+-d "short=wrp-curl" \\
+${config.hostname}
+</pre>
+
+    <p>The <code>-d "short=wrp-curl"</code> part is optional.</p>
     </div>    
     `;
 

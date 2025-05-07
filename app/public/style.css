@@ -107,3 +107,11 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+pre {
+  background: #222;
+  color: white;
+  padding: 5px;
+  border: 1px solid gray;
+  border-radius: 5px;
+}

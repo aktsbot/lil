@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# this is a handy script to invoke lil
+# from your terminal via cURL.
+
+# cp lil ~/bin
+
+# assuming ~/bin is in your $PATH
+
+# invoke like so
+# lil "https://www.warp.dev/pricing"
+# lil "https://www.warp.dev/pricing" warp
+
+# get your own token
+TOKEN=YlvNTLQLPPV7CKB
+
+# replace http://localhost:3000
+# with your instance of lil
+HOST=http://localhost:3030
+# HOST=https://one0.xyz
+
+curl -X POST \
+-H "x-auth-token: $TOKEN" \
+-H "Content-type: application/x-www-form-urlencoded" \
+-d "full_url=$1" \
+-d "short=$2" \
+$HOST
+
+echo 

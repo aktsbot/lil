@@ -6,6 +6,7 @@ const config = {
   env: env.NODE_ENV || "production",
   sessionSecret: env.LIL_SESSION_SECRET || "Change this!",
   sessionCookieName: env.LIL_SESSION_COOKIE_NAME || "lil.sid",
+  hostname: env.LIL_HOSTNAME || "",
 };
 
 export default config;

@@ -2,6 +2,7 @@ import svgCaptcha from "svg-captcha";
 import { Router } from "express";
 
 import db from "./db.js";
+import config from "./config.js";
 import { ifLoggedInGoHome, userSessionRequired } from "./middlewares.js";
 
 import { pageHtml } from "./pages.js";
@@ -148,7 +149,10 @@ router.post("/", userSessionRequired, (req, res, next) => {
   const { body } = req;
   const backUrl = req.header("Referer") || "/new";
 
-  if (!body.full_url) {
+  if (!body || !body.full_url) {
+    if (res.locals.not_browser) {
+      return res.status(400).send("Invalid payload");
+    }
     return res.redirect(backUrl + "?message=Invalid+payload");
   }
 
@@ -158,6 +162,9 @@ router.post("/", userSessionRequired, (req, res, next) => {
     });
 
     if (shortResults.length) {
+      if (res.locals.not_browser) {
+        return res.status(400).send("Short code already in use");
+      }
       return res.redirect(backUrl + "?message=Short+code+already+in+use");
     }
   }
@@ -174,6 +181,10 @@ router.post("/", userSessionRequired, (req, res, next) => {
     `INSERT INTO urls (id, destination, short, user) VALUES (@id, @destination, @short, @user);`,
     { ...url }
   );
+
+  if (res.locals.not_browser) {
+    return res.send(`${config.hostname}/${url.short}`);
+  }
 
   return res.redirect("/list");
 });
