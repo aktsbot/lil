@@ -135,7 +135,16 @@ export const pageHtml = {
     html += `${templates.tail()}`;
     return html;
   },
-  listUrls: ({ query, user }) => {
+  listUrls: ({
+    query,
+    user,
+    results,
+    totalPages,
+    offset,
+    nextPageLink,
+    prevPageLink,
+    page,
+  }) => {
     let html = `${templates.head({ title: "your urls" })}`;
     // TODO:
     html += `${templates.nav({ username: user.username })}`;
@@ -155,32 +164,38 @@ export const pageHtml = {
             <th>full url</th>
             <th>short url</th>
           </tr>
-          <tr>
-            <td>1</td>
-            <td>
-              <a href="#">https://foo.com/a/long/url?with=query&amp;params=1</a>
-            </td>
-            <td>
-              <a href="#">https://one0.xyz/abc1</a>
-            </td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>
-              <a href="#">https://foo.com/a/long/url?with=query&amp;params=1</a>
-            </td>
-            <td>
-              <a href="#">https://one0.xyz/abc1</a>
-            </td>
-          </tr>
+          ${
+            results.length
+              ? results
+                  .map((r, index) => {
+                    return `
+            <tr>
+              <td>${index + 1 + offset}</td>
+              <td>
+                <a href="${r.destination}">${r.destination}</a>
+              </td>
+              <td>
+                <a href="/${r.short}">/${r.short}</a>
+              </td>
+            </tr>
+            `;
+                  })
+                  .join("")
+              : '<tr><td colspan="3" style="text-align: center;">No urls added yet</td></tr>'
+          }
         </table>
       </div>
 
+      ${
+        totalPages
+          ? `
       <div style="margin-top: 8px; text-align: center">
-        <a href="#">&lt; prev</a>
-        <span>page 1 of 3</span>
-        <a href="#">next &gt;</a>
-      </div>
+        ${prevPageLink ? `<a href="#">&lt; prev</a>` : ""}
+        <span>page 1 of ${totalPages}</span>
+        ${nextPageLink ? `<a href="#">next &gt;</a>` : ""}
+      </div>`
+          : ""
+      }
     </div>
     `;
 

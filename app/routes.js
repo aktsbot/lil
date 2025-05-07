@@ -37,10 +37,47 @@ router.get("/me", userSessionRequired, (req, res) => {
 });
 
 router.get("/list", userSessionRequired, (req, res) => {
+  let limit = 10;
+  let offset = 0;
+
+  const page = req.query.p || 1; // 1
+  offset = page * limit - limit;
+
+  const count = db.get(`SELECT count(id) as count FROM urls WHERE user=@user`, {
+    user: res.locals.user.id,
+  });
+
+  const results = db.query(
+    `SELECT 
+    id, destination, short
+    FROM 
+    urls WHERE user=@user
+    LIMIT ${limit}
+    OFFSET ${offset}`,
+    {
+      user: res.locals.user.id,
+    }
+  );
+  const totalPages = Math.ceil(count.count / limit);
+  let nextPageLink = "";
+  let prevPageLink = "";
+  if (page < totalPages) {
+    nextPageLink = `/all?p=${Number(page) + 1}`;
+  }
+  if (page > 1) {
+    prevPageLink = `/all?p=${Number(page) - 1}`;
+  }
+
   return res.send(
     pageHtml.listUrls({
       query: req.query,
       user: res.locals.user,
+      results,
+      totalPages,
+      offset,
+      nextPageLink,
+      prevPageLink,
+      page,
     })
   );
 });
