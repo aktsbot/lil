@@ -2,7 +2,7 @@ import config from "./config.js";
 
 // templates
 const templates = {
-  head: ({ title }) => `
+  head: ({ title, query }) => `
 <!doctype html>
 <html>
 
@@ -96,6 +96,10 @@ th {
 }
 
   </style>
+
+  <script>
+  ${query?.message ? `alert('${query.message}')` : ""}
+  </script>
 </head>
 <body>
 `,
@@ -123,8 +127,11 @@ th {
 };
 
 export const pageHtml = {
-  home: () => {
-    let html = `${templates.head({ title: "Another URL shortening service" })}`;
+  home: ({ query }) => {
+    let html = `${templates.head({
+      title: "Another URL shortening service",
+      query,
+    })}`;
 
     html += `
     <div class="container">
@@ -134,7 +141,7 @@ export const pageHtml = {
         a simple URL shortening service. Please login.
       </p>
 
-      <form action="">
+      <form action="/login" method="POST">
         <label for="username">username</label>
         <input
           type="text"
@@ -145,7 +152,7 @@ export const pageHtml = {
         />
 
         <div class="captcha">
-          <img src="captcha.png" alt="captcha" />
+          <img src="/captcha.svg" alt="captcha" /> 
         </div>
 
         <label for="captcha">captcha</label>
@@ -165,7 +172,7 @@ export const pageHtml = {
     html += `${templates.tail()}`;
     return html;
   },
-  newUrl: () => {
+  newUrl: ({ query }) => {
     let html = `${templates.head({ title: "shorten new url" })}`;
 
     // TODO:
@@ -203,7 +210,7 @@ export const pageHtml = {
     html += `${templates.tail()}`;
     return html;
   },
-  listUrls: () => {
+  listUrls: ({ query }) => {
     let html = `${templates.head({ title: "your urls" })}`;
     // TODO:
     html += `${templates.nav({ username: "hardy" })}`;
@@ -253,7 +260,7 @@ export const pageHtml = {
     html += `${templates.tail()}`;
     return html;
   },
-  me: () => {
+  me: ({ query }) => {
     let html = `${templates.head({ title: "me" })}`;
 
     // TODO:

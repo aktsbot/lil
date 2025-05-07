@@ -1,33 +1,106 @@
+import svgCaptcha from "svg-captcha";
 import { Router } from "express";
 
 import db from "./db.js";
-import config from "./config.js";
+import { ifLoggedInGoHome, userSessionRequired } from "./middlewares.js";
 
 import { pageHtml } from "./pages.js";
+import { makeId, makeToken } from "./utils.js";
 
 const router = Router();
 
 // all pages
-router.get("/", (req, res) => {
-  return res.send(pageHtml.home());
+router.get("/", ifLoggedInGoHome, (req, res) => {
+  return res.send(
+    pageHtml.home({
+      query: req.query,
+    })
+  );
 });
 
-router.get("/new", (req, res) => {
-  return res.send(pageHtml.newUrl());
+router.get("/new", userSessionRequired, (req, res) => {
+  return res.send(
+    pageHtml.newUrl({
+      query: req.query,
+    })
+  );
 });
 
-router.get("/me", (req, res) => {
-  return res.send(pageHtml.me());
+router.get("/me", userSessionRequired, (req, res) => {
+  return res.send(
+    pageHtml.me({
+      query: req.query,
+    })
+  );
 });
 
-router.get("/list", (req, res) => {
-  return res.send(pageHtml.listUrls());
+router.get("/list", userSessionRequired, (req, res) => {
+  return res.send(
+    pageHtml.listUrls({
+      query: req.query,
+    })
+  );
 });
 
 router.get("/logout", (req, res) => {
-  return res.redirect("/");
+  req.session.destroy(() => {
+    return res.redirect("/");
+  });
+});
+
+router.get("/captcha.svg", (req, res) => {
+  const captcha = svgCaptcha.create();
+  req.session.captchaText = captcha.text;
+  res.set("Content-Type", "image/svg+xml");
+  return res.send(captcha.data);
 });
 
 // all submissions
+router.post("/login", (req, res, next) => {
+  const { body } = req;
+  const backUrl = req.header("Referer") || "/";
+
+  if (!body.username || !body.captcha) {
+    return res.redirect(backUrl + "?message=Invalid+payload");
+  }
+
+  if (!req.session.captchaText || req.session.captchaText !== body.captcha) {
+    return res.redirect(backUrl + "?message=Invalid+captcha");
+  }
+
+  let user = {
+    id: makeId(),
+    username: body.username,
+    api_token: makeToken(),
+    status: "active",
+  };
+  const userResults = db.query(
+    `SELECT id, username, api_token, created_at, status FROM users where username=@username LIMIT 1`,
+    {
+      username: body.username,
+    }
+  );
+
+  if (userResults.length == 0) {
+    // create user
+    db.run(
+      `INSERT INTO users (id, username, api_token, status) VALUES (@id, @username, @api_token, @status);`,
+      { ...user }
+    );
+  }
+
+  if (userResults[0]) {
+    user = {
+      ...userResults[0],
+    };
+  }
+
+  if (user.status !== "active") {
+    return res.redirect(backUrl + "?message=User+cannot+login");
+  }
+
+  req.session.user = user;
+  return res.redirect("/list");
+});
 
 export default router;

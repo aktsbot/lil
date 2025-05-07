@@ -1,8 +1,8 @@
 CREATE TABLE users (
   id CHARACTER(20) PRIMARY KEY,
   username CHARACTER(20) UNIQUE,
+  api_token CHARACTER(40) UNIQUE,
   status CHARACTER(20), -- active, inactive
-  captcha CHARACTER(20),
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
