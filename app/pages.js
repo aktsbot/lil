@@ -190,9 +190,9 @@ export const pageHtml = {
         totalPages
           ? `
       <div style="margin-top: 8px; text-align: center">
-        ${prevPageLink ? `<a href="#">&lt; prev</a>` : ""}
+        ${prevPageLink ? `<a href="${prevPageLink}">&lt; prev</a>` : ""}
         <span>page 1 of ${totalPages}</span>
-        ${nextPageLink ? `<a href="#">next &gt;</a>` : ""}
+        ${nextPageLink ? `<a href="${nextPageLink}">next &gt;</a>` : ""}
       </div>`
           : ""
       }
