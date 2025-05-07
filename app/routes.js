@@ -106,4 +106,39 @@ router.post("/login", (req, res, next) => {
   return res.redirect("/list");
 });
 
+// where all urls goto shorten :)
+router.post("/", userSessionRequired, (req, res, next) => {
+  const { body } = req;
+  const backUrl = req.header("Referer") || "/new";
+
+  if (!body.full_url) {
+    return res.redirect(backUrl + "?message=Invalid+payload");
+  }
+
+  if (body.short) {
+    const shortResults = db.query(`SELECT id FROM urls WHERE short=@short`, {
+      short: body.short,
+    });
+
+    if (shortResults.length) {
+      return res.redirect(backUrl + "?message=Short+code+already+in+use");
+    }
+  }
+
+  const url = {
+    id: makeId(),
+    destination: body.full_url,
+    short: body.short || makeId(),
+    user: res.locals.user.id,
+  };
+
+  // create url
+  db.run(
+    `INSERT INTO urls (id, destination, short, user) VALUES (@id, @destination, @short, @user);`,
+    { ...url }
+  );
+
+  return res.redirect("/list");
+});
+
 export default router;

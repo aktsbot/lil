@@ -2,7 +2,7 @@ import config from "./config.js";
 
 // templates
 const templates = {
-  head: ({ title, query }) => `
+  head: ({ title }) => `
 <!doctype html>
 <html>
 
@@ -11,9 +11,6 @@ const templates = {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${title} | ${config.appName}</title>
   <link rel="stylesheet" href="/style.css" />
-  <script>
-  ${query?.message ? `alert('${query.message}')` : ""}
-  </script>
 </head>
 <body>
 `,
@@ -33,20 +30,33 @@ const templates = {
       </a>
     </div>
     <div>
-      <a href="/logout">logout</a>
+      <a href="/logout">&#9032; logout</a>
     </div>
   </div>
 </nav>
   `,
+
+  message: ({ query }) => {
+    let html = ``;
+    if (query.message) {
+      html += `
+      <div class="container warning" id="messages">
+        <span>${query.message}</span>
+        <button onclick="this.parentNode.remove();" class="close">&times</button>
+      </div>
+      `;
+    }
+    return html;
+  },
 };
 
 export const pageHtml = {
   home: ({ query }) => {
     let html = `${templates.head({
       title: "Another URL shortening service",
-      query,
     })}`;
 
+    html += templates.message({ query });
     html += `
     <div class="container">
       <h1>Hi there!</h1>
@@ -72,6 +82,7 @@ export const pageHtml = {
         <label for="captcha">captcha</label>
         <input
           type="text"
+          class="monospace"
           name="captcha"
           id="captcha"
           placeholder="The content of the image seen above"
@@ -89,15 +100,16 @@ export const pageHtml = {
   newUrl: ({ query, user }) => {
     let html = `${templates.head({ title: "shorten new url" })}`;
 
-    // TODO:
     html += `${templates.nav({ username: user.username })}`;
+
+    html += templates.message({ query });
 
     html += `
     <div class="container">
       <a href="/list">&lt;Back</a>
       <h1>new short url</h1>
 
-      <form action="">
+      <form action="/" method="POST">
         <label for="full_url">full url</label>
         <input
           type="text"
@@ -107,13 +119,12 @@ export const pageHtml = {
           required
         />
 
-        <label for="short_code">short code(optional)</label>
+        <label for="short">short code(optional)</label>
         <input
           type="text"
-          name="short_code"
-          id="short_code"
+          name="short"
+          id="short"
           placeholder="foo1"
-          required
         />
 
         <button type="submit">shorten</button>
@@ -129,11 +140,13 @@ export const pageHtml = {
     // TODO:
     html += `${templates.nav({ username: user.username })}`;
 
+    html += templates.message({ query });
+
     html += `
     <div class="container">
       <h1>my urls</h1>
       <div style="margin-bottom: 8px; text-align: right">
-        <a href="/new">new url</a>
+        <a href="/new">&plus; new url</a>
       </div>
       <div style="overflow-x: scroll">
         <table>

@@ -1,4 +1,5 @@
 export const userSessionRequired = (req, res, next) => {
+  // TODO: check headers for tokens as well.
   if (!res.locals.user) {
     return next({ statusCode: 403, message: "Access denied. Please login" });
   }
