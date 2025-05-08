@@ -39,3 +39,13 @@ Open http://localhost:3030.
     ```
 
 2. There is a sample `nginx` config in the `extras` folder.
+
+3. Migrating from 1.0.0 to 2.0.0
+
+    Get the old database and then run
+
+    ```
+    node extras/mig.js lil.old.db
+    ```
+
+    This will insert all active urls and users from the old database into the current one.
